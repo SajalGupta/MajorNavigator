@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Intent Example</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="navigateButtonString">Next</string>
+    <string name="contactNumberHintString">Enter Contact Number</string>
+    <string name="enterNameString">Enter Name</string>
+    <string name="welcomeString">Welcome</string>
+    <string name="taxiRadioString">Taxi Stand</string>
+    <string name="metroRadioString">Metro Station</string>
+    <string name="busRadioString">Bus Stop</string>
+    <string name="title_activity_beta">Beta</string>
+    <string name="BetaDestinationHintString">Enter Destination</string>
+    <string name="betaStartHintString">Pull Current Location (soon)</string>
+    <string name="betaIntentDataString">Large Text</string>
+    <string name="betaButton">MAP</string>
+    <string name="betaTextIntentData">Medium Text</string>
+    <string name="betaStartlocationlongString">Small Text</string>
+    <string name="betaStartLocationLatString">Small Text</string>
+    <string name="beta_provider">Small Text</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="title_activity_new_map">NewMapActivity</string>
+    <string name="title_activity_gamma">Gamma</string>
+    <string name="getPlacesString">New Button</string>
+    <string name="getPlacesString2">Get Places</string>
+    <string name="gammaText">Large Text</string>
+
+</resources>
