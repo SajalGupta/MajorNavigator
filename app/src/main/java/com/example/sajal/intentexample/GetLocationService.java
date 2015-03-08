@@ -133,7 +133,7 @@ public class GetLocationService extends Service
 
         public void onLocationChanged(final Location loc)
         {
-            Log.i("******************", "Location changed");
+            Log.i("******************", "Location blah blah !! changed");
             if(isBetterLocation(loc, previousBestLocation)) {
 
 

@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,6 +22,8 @@ public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     static int[] i = new int[1];
+    Location startLocForDirFetcher;
+    Location destLocForDirFetcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +37,20 @@ public class MapsActivity extends FragmentActivity {
             return;
         }
         LatLng destinationMarker = (LatLng) GammaData.get("destinationMarker");
+        DirectionsFetcher mDirectionsFetcher = new DirectionsFetcher(startLocForDirFetcher,destLocForDirFetcher);
+        Log.i("DirectionFetcher","About to start");
+        destLocForDirFetcher.setLatitude(destinationMarker.latitude);
+        destLocForDirFetcher.setLongitude(destinationMarker.longitude);
         mMap.addMarker(new MarkerOptions()
                 .position(destinationMarker)
 
                 .icon(BitmapDescriptorFactory
                         .defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                 .title("Destination"));
+
+
+
+        mDirectionsFetcher.doInBackground();
     }
 
     @Override
@@ -105,6 +116,9 @@ public class MapsActivity extends FragmentActivity {
 
         LatLng currentPosition = new LatLng(location.getLatitude(),
                 location.getLongitude());
+        Log.i("Dire***","settingStartLocation");
+        startLocForDirFetcher.setLatitude(currentPosition.latitude);
+        startLocForDirFetcher.setLongitude(currentPosition.longitude);
 
 
 
