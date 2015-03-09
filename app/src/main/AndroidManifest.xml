@@ -71,6 +71,11 @@
                 android:value="com.example.sajal.intentexample.Alpha" />
         </activity>
 
+        <service
+            android:name=".DirectionFetcher"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
 </manifest>

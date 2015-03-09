@@ -27,5 +27,6 @@
     <string name="getPlacesString">New Button</string>
     <string name="getPlacesString2">Get Places</string>
     <string name="gammaText">Large Text</string>
+    <string name="getRouteString">Get Route</string>
 
 </resources>

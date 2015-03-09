@@ -152,7 +152,10 @@ public class Beta extends ActionBarActivity {
                 }
                 intermediateURL = "&radius=500&types="+searchType+"&key=AIzaSyCxlMg0r_bb0R07g6D0lB2dBT9lijsTB-0";
                 finalURL = baseURL+locationParameters+intermediateURL;
+
+
                 obj = new HandleJSON(finalURL);
+
                 Runnable r = new Runnable() {
                     @Override
                     public void run() {
@@ -173,6 +176,7 @@ public class Beta extends ActionBarActivity {
                 };
                 Thread jsonThread = new Thread(r);
                 jsonThread.start();
+                i[0]++;
 
             }
 
@@ -185,17 +189,12 @@ public class Beta extends ActionBarActivity {
 
             Log.i("Gamma","waiting for parse");
             if(obj.parsingComplete){
+
                 Log.i("Gamma","Parsing Complete");
+
                 latLnStore = obj.getLatlnStore();
 
                 names = obj.getNames();
-                /*for(int i=0;i<latLnStore.length;i++){
-                    myGammaData.append("Location "+Integer.toString(i));
-                    myGammaData.append(" : "+Double.toString(latLnStore[i].latitude));
-                    myGammaData.append(","+Double.toString(latLnStore[i].longitude)+"\n");
-                }*/
-
-
 
             }
         }

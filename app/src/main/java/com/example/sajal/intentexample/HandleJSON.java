@@ -60,7 +60,7 @@ public class HandleJSON {
                     InputStream stream = conn.getInputStream();
 
                     String data = convertStreamToString(stream);
-                    Log.i("JSON",data);
+
                     readAndParseJSON(data);
                     stream.close();
 
@@ -89,10 +89,12 @@ public class HandleJSON {
             JSONObject sys2;
             latlnStore= new LatLng[sys.length()];
             names = new String[sys.length()];
-            for(int i=0;i<sys.length();i++) {
+            for(int i=0;i<sys.length();i++)
+
+            {
+
                  sys2 = sys.getJSONObject(i).getJSONObject("geometry").getJSONObject("location");
-                Log.i("JSON","Latitude Parsed :"+sys2.getString("lat"));
-                Log.i("JSON","Longitude Parsed :"+sys2.getString("lng"));
+
                 latlnStore[i] =  new LatLng(Double.parseDouble(sys2.getString("lat")),Double.parseDouble(sys2.getString("lng")));
                 names[i] = sys.getJSONObject(i).getString("name");
 

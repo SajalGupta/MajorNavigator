@@ -1,13 +1,19 @@
 package com.example.sajal.intentexample;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.location.Location;
+import android.os.IBinder;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -17,18 +23,41 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     static int[] i = new int[1];
-    Location startLocForDirFetcher;
-    Location destLocForDirFetcher;
+    LatLng startLocForDirFetcher;
+    LatLng destLocForDirFetcher;
+    List<LatLng> polyUtil;
+    DirectionFetcher myDirectionFetcher;
+    boolean isBound = false;
 
+    private ServiceConnection myServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            DirectionFetcher.MyLocalBinder binder = (DirectionFetcher.MyLocalBinder)service;
+            myDirectionFetcher = binder.getDirectionFetcher();
+            isBound = true;
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            isBound = false;
+
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         registerReceiver(receiver,new IntentFilter(GetLocationService.BROADCAST_ACTION));
+
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
 
@@ -37,10 +66,9 @@ public class MapsActivity extends FragmentActivity {
             return;
         }
         LatLng destinationMarker = (LatLng) GammaData.get("destinationMarker");
-        DirectionsFetcher mDirectionsFetcher = new DirectionsFetcher(startLocForDirFetcher,destLocForDirFetcher);
-        Log.i("DirectionFetcher","About to start");
-        destLocForDirFetcher.setLatitude(destinationMarker.latitude);
-        destLocForDirFetcher.setLongitude(destinationMarker.longitude);
+
+        destLocForDirFetcher= new LatLng(destinationMarker.latitude,destinationMarker.longitude);
+
         mMap.addMarker(new MarkerOptions()
                 .position(destinationMarker)
 
@@ -50,7 +78,6 @@ public class MapsActivity extends FragmentActivity {
 
 
 
-        mDirectionsFetcher.doInBackground();
     }
 
     @Override
@@ -103,8 +130,6 @@ public class MapsActivity extends FragmentActivity {
 
 
             Bundle extra = intent.getExtras();
-
-
             Location loc = (Location) extra.get("Location");
              putMeOnThatMap(loc);
 
@@ -112,22 +137,29 @@ public class MapsActivity extends FragmentActivity {
 
         }
     };
+
     private void putMeOnThatMap(Location location){
 
         LatLng currentPosition = new LatLng(location.getLatitude(),
                 location.getLongitude());
-        Log.i("Dire***","settingStartLocation");
-        startLocForDirFetcher.setLatitude(currentPosition.latitude);
-        startLocForDirFetcher.setLongitude(currentPosition.longitude);
-
-
-
-
 
 
         // Zoom in the Google Map
 
         if(i[0]==0) {
+            startLocForDirFetcher=new LatLng(currentPosition.latitude,currentPosition.longitude);
+            if(destLocForDirFetcher!=null){
+                Log.i("Direction Service","Sending Intent to service");
+                Intent i = new Intent(this,DirectionFetcher.class);
+                i.putExtra("origin",startLocForDirFetcher);
+                i.putExtra("destination",destLocForDirFetcher);
+               bindService(i,myServiceConnection,Context.BIND_AUTO_CREATE);
+
+
+
+            }
+            else
+                Log.i("DirectionsFetcher","Dest Null!!");
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setCompassEnabled(true);
             CameraPosition cameraPosition = new CameraPosition.Builder().target(
@@ -163,5 +195,26 @@ public class MapsActivity extends FragmentActivity {
     protected void onPause() {
         super.onPause();
 //        unregisterReceiver(receiver);
+    }
+
+    public void onClickGetRoutes(View view) {
+
+        if(myDirectionFetcher.latLngs==null){
+            Toast toast = Toast.makeText(this,"please wait while crap is being fetched",Toast.LENGTH_SHORT);
+            toast.show();
+
+        }
+        else{
+            polyUtil = myDirectionFetcher.latLngs;
+            PolylineOptions options = new PolylineOptions();
+            for(int i=0;i<polyUtil.size();i++)
+                options.add(polyUtil.get(i));
+
+
+            mMap.addPolyline(options);
+
+        }
+
+
     }
 }
