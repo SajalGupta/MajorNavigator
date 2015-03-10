@@ -23,6 +23,15 @@
         android:layout_centerHorizontal="true"
         android:onClick="onClickGetRoutes"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/mapTextString"
+        android:id="@+id/mapText"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
 
 </RelativeLayout>
 

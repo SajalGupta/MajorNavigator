@@ -28,5 +28,6 @@
     <string name="getPlacesString2">Get Places</string>
     <string name="gammaText">Large Text</string>
     <string name="getRouteString">Get Route</string>
+    <string name="mapTextString">Medium Text</string>
 
 </resources>

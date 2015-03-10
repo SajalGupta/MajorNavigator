@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -73,7 +74,7 @@ public class MapsActivity extends FragmentActivity {
                 .position(destinationMarker)
 
                 .icon(BitmapDescriptorFactory
-                        .defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                        .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
                 .title("Destination"));
 
 
@@ -212,6 +213,9 @@ public class MapsActivity extends FragmentActivity {
 
 
             mMap.addPolyline(options);
+
+            TextView mapText = (TextView)findViewById(R.id.mapText);
+            mapText.setText("Total Distance : "+myDirectionFetcher.distance+"\nExpected Duration : "+myDirectionFetcher.expectedDuration+"\nStart Address : "+myDirectionFetcher.startAddress+"\nDestination : "+myDirectionFetcher.endAddress);
 
         }
 

@@ -37,6 +37,10 @@ public class DirectionFetcher extends Service {
     final HttpTransport HTTP_TRANSPORT = AndroidHttp.newCompatibleTransport();
     final JsonFactory JSON_FACTORY = new JacksonFactory();
     public static final String BROADCAST_ACTION_DIRECTION = "Hello World";
+    String distance;
+    String expectedDuration;
+    String startAddress;
+    String endAddress;
 
     LatLng param1;
     LatLng param2;
@@ -79,6 +83,12 @@ public class DirectionFetcher extends Service {
                     HttpResponse httpResponse = request.execute();
                     DirectionsResult directionsResult = httpResponse.parseAs(DirectionsResult.class);
                     String encodedPoints = directionsResult.routes.get(0).overviewPolyLine.points;
+                     distance = directionsResult.routes.get(0).legs.get(0).distance.distanceText;
+                     expectedDuration = directionsResult.routes.get(0).legs.get(0).durationText.expectedDuration;
+                    startAddress= directionsResult.routes.get(0).legs.get(0).startAddress;
+                    endAddress = directionsResult.routes.get(0).legs.get(0).endAddress;
+                    Log.i("DISTANCE",distance);
+                    Log.i("DURATION",expectedDuration);
                      latLngs = PolyUtil.decode(encodedPoints);
                     Log.i("DirectionFetcher","Thread Finished no Exceptions");
                 }catch (Exception ex){
@@ -131,7 +141,30 @@ public class DirectionFetcher extends Service {
     public static class Route {
         @Key("overview_polyline")
         public OverviewPolyLine overviewPolyLine;
+        @Key("legs")
+        public List<Legs> legs;
 
+
+    }
+
+    public static class Legs{
+        @Key("distance")
+        public Distance distance;
+        @Key("duration")
+        public DurationText durationText;
+        @Key("end_address")
+        public String endAddress;
+        @Key("start_address")
+        public String startAddress;
+
+    }
+    public static class Distance{
+        @Key("text")
+        public String distanceText;
+    }
+    public static class DurationText{
+        @Key("text")
+        public String expectedDuration;
     }
 
     public static class OverviewPolyLine {
