@@ -122,6 +122,8 @@ public class Beta extends ActionBarActivity {
 
         startActivity(i);
     }
+
+    //RIPPCORD FUCK YOU!!
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
